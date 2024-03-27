@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tracker</title>
+</head>
+
+<body>
+        <header>
+            <nav>
+            <ul>
+            {% if user.is_authenticated %} 
+                <li><a href="{% url "show_my_tasks" %}">My tasks</a></li>
+                <li><a href="{% url "list_projects" %}">My projects</a></li>
+                <li><a href="{% url "logout" %}">Logout</a></li>
+            </ul>
+            {% else %}
+            <ul>
+                <li><a href="{% url 'login' %}">login</a></li>
+                <li><a href="{% url 'signup' %}">signup</a></li>
+            <u/ul>    
+            {% endif %}
+            </nav>
+        </header>
+    <main>
+        <div>
+            <h1> My Projects </h1>
+            <p><a href={% url "create_project" %}>Create a new project</a></p>
+            {% if projects %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Number of tasks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for project in projects %}
+                            <tr> 
+                                <td><a href="{% url 'show_project' project.id %}">{{project.name}}</a></td>
+                                <td> {{project.tasks.all|length}} </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p> You are not assigned to any projects </p>    
+            {% endif %}    
+        </div>    
+    </main>
+  </body>
+</html>
